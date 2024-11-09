@@ -1,3 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/* Font Face For Patient Hub */
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-Medium.otf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-MediumItalic.otf");
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-Bold.otf");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-BoldItalic.otf");
+  font-weight: bold;
+  font-style: italic;
+}
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-Italic.otf");
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-Light.otf");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "satoshi";
+  src: url("./assets/fonts/Satoshi-LightItalic.otf");
+  font-weight: 300;
+  font-style: italic;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "satoshi", "Inter", sans-serif;
+}

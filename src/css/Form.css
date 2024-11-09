@@ -1,0 +1,23 @@
+@tailwind components;
+
+label{
+    @apply text-xl text-dark-blue-800 font-bold mb-2;
+}
+input {
+  width: 100%;
+  height: 40px;
+  @apply bg-light-blue rounded-md p-3 mb-6 focus:outline-dark-blue-800 ;
+}
+select {
+  @apply h-10 mb-5 bg-light-blue rounded-md p-1 w-full;
+}
+button {
+    @apply bg-dark-blue-800 p-2 text-white rounded-md hover:border-2 hover:border-dark-blue-800 hover:bg-white hover:text-dark-blue-800; 
+}
+input ~ p{
+    @apply text-red-500 -mt-6 mb-5 text-sm font-bold;
+}
+
+.form-page{
+  @apply flex flex-col md:flex-row p-8 md:p-10 gap-5 justify-center md:items-center;
+}

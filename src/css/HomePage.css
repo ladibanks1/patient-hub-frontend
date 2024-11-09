@@ -1,0 +1,57 @@
+@tailwind components;
+
+.image {
+  background-image: url("../assets/images/skyBlueCircle.png"),
+    url("../assets//images/darkBlueCircle.png");
+  background-position: 100% 40%, 30% 0%;
+  background-size: 350px, 350px;
+  background-repeat: no-repeat;
+  padding-right: 10px;
+}
+@media screen and (max-width: 1024px) {
+  .image {
+    background-image: url("../assets/images/skyBlueCircle.png"),
+      url("../assets//images/darkBlueCircle.png");
+    background-position: 100% 40%, 30% 0%;
+    background-size: 200px, 200px;
+    background-repeat: no-repeat;
+    padding-right: 10px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .image {
+    background-image: url("../assets/images/skyBlueCircle.png"),
+      url("../assets//images/darkBlueCircle.png");
+    background-position: 100% 40%, 30% 0%;
+    background-size: 100px, 100px;
+    background-repeat: no-repeat;
+    padding-right: 10px;
+  }
+}
+
+.word-space {
+  word-spacing: 4px;
+}
+
+@layer components {
+  .perks {
+    @apply flex flex-wrap gap-5 lg:gap-10 lg:p-16 text-white p-5 justify-center;
+  }
+  .perks div {
+    max-width: 350px;
+    width: 100%;
+    h3 {
+      @apply font-bold text-xl md:text-2xl break-words mt-10;
+    }
+    p {
+      @apply font-normal;
+    }
+  }
+  .client-stories {
+    @apply flex  flex-wrap py-10 gap-16 mt-10 mx-auto  justify-center;
+    div {
+      width: 100%;
+      max-width: 350px;
+    }
+  }
+}
