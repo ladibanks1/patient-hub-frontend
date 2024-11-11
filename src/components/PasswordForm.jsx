@@ -16,6 +16,7 @@ const PasswordForm = ({text}) => {
         type={showPassword ? "text" : "password"}
         name="password"
         id="password"
+        placeholder="Password"
         required
       />
       {showPassword ? (

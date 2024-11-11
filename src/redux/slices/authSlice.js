@@ -9,7 +9,7 @@ const apiClient = axios.create({
 
 // Register User MiddleWare
 export const registerUser = createAsyncThunk(
-  "authSlice/registerUser",
+  "auth/registerUser",
   async (data, { rejectWithValue }) => {
     try {
       const response = await apiClient.post("/auth/register-patient", data);
@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
 
 // Register Hospital MiddleWare
 export const registerHospital = createAsyncThunk(
-  "authSlice/registerHospital",
+  "auth/registerHospital",
   async (data, { rejectWithValue }) => {
     try {
       const response = await apiClient.post("/auth/register-hospital", data);
@@ -35,7 +35,7 @@ export const registerHospital = createAsyncThunk(
 
 // Login MiddleWare
 export const login = createAsyncThunk(
-  "authSlice/login",
+  "auth/login",
   async (data, { rejectWithValue }) => {
     try {
       const response = await apiClient.post("/auth/login", data);
@@ -58,7 +58,7 @@ const initialState = {
 // Authentication Slice
 const authSlice = createSlice({
   initialState,
-  name: "authSlice",
+  name: "auth",
   reducers: {
     clearState: (state) => {
       state.loading = false;

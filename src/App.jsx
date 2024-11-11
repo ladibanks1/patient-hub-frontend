@@ -20,13 +20,21 @@ import LoginPage from "./pages/LoginPage";
 import Authentication from "./context/Authentication";
 import ResetPassword from "./pages/ResetPassword";
 
-
 // Patient Pages
 import PatientDashboard from "./pages/Patient/Dashboard";
+import PatientHome from "./pages/Patient/Home";
+import PatientAppointment from "./pages/Patient/Appointment";
+import PatientProfileSettings from "./pages/Patient/ProfileSettings";
+import PatientChat from "./pages/Patient/Chat";
+import AppointmentForm from "./pages/Patient/AppointmentForm";
 
 // Hospital Pages
-import HospitalDashbord from "./pages/Hospital/Dashboard";
+import HospitalDashboard from "./pages/Hospital/Dashboard";
 import RegisterStaffPage from "./pages/Hospital/RegisterStaffPage";
+import HospitalOverview from "./pages/Hospital/Overview";
+import HospitalStaffs from "./pages/Hospital/Staffs";
+import HospitalProfileSettings from "./pages/Hospital/ProfileSettings";
+import HospitalPatientRecords from "./pages/Hospital/PatientRecords";
 
 function App() {
   // Routes
@@ -46,11 +54,24 @@ function App() {
         <Route path="/" element={<Authentication />}>
           {/* Dashboard Navbar */}
           {/* Patient Route */}
-          <Route path="patient-dashboard" element={<PatientDashboard />} />
+          <Route path="patient-dashboard" element={<PatientDashboard />}>
+            <Route index element={<PatientHome />} />
+            <Route path="appointment" element={<PatientAppointment />} />
+            <Route path="settings" element={<PatientProfileSettings />} />
+            <Route path="chat" element={<PatientChat />} />
+            <Route path="book-appointment" element={<AppointmentForm />} />
+          </Route>
 
           {/* Hospital Route */}
-          <Route path="hospital-dashboard" element={<HospitalDashbord />}>
+          <Route path="hospital-dashboard" element={<HospitalDashboard />}>
             <Route path="register-staff" element={<RegisterStaffPage />} />
+            <Route index element={<HospitalOverview />} />
+            <Route path="staffs" element={<HospitalStaffs />} />
+            <Route
+              path="patient-records"
+              element={<HospitalPatientRecords />}
+            />
+            <Route path="settings" element={<HospitalProfileSettings />} />
           </Route>
         </Route>
 

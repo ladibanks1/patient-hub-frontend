@@ -1,0 +1,65 @@
+@tailwind components;
+
+/* Home Page And Dashboard   Style*/
+@layer components {
+  .home-patient-dashboard {
+    @apply grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_3fr] my-10 ;
+  }
+
+  .header {
+    @apply border-r-[1px] md:border-dark-blue-800 md:rounded-xl flex items-center md:flex-col md:items-start flex-wrap justify-between md:justify-start ;
+  }
+
+  .navigation{
+    @apply flex md:flex-col text-xl gap-3 text-sky-blue font-bold md:px-10 md:mt-10 md:gap-10 ;
+
+  }
+
+  .brief {
+    @apply flex justify-evenly mt-8 md:mt-0 text-sm md:text-base;
+    p {
+      @apply text-sky-blue font-semibold;
+    }
+
+    span {
+      @apply text-xl text-dark-blue-800 font-bold;
+    }
+  }
+
+
+  /* Home Page Components */
+  .table {
+    @apply w-[93%] mx-auto p-3 md:p-5 my-10 border-dark-blue-800 border-[1px] rounded-lg overflow-auto;
+  }
+
+  .table table {
+    @apply  text-center border-collapse table-auto;
+  }
+
+  .table-header tr {
+    @apply bg-light-blue rounded-lg font-bold text-dark-blue-800;
+  }
+
+  .table th {
+    @apply p-2 md:p-2 md:py-4 text-xs lg:text-base ;
+  }
+
+  .table-body tr {
+    @apply border-b-2 border-white;
+    td {
+      @apply py-3;
+    }
+  }
+
+  .table td {
+    @apply text-xs lg:text-base;
+  }
+
+  .extras {
+    @apply flex items-center mt-32 justify-between;
+  }
+/* Box Shadow */
+  .table{
+      box-shadow: 0.2px 0.2px 10px #2e2f5d41;
+  }
+}

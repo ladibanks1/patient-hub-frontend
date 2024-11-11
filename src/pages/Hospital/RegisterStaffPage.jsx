@@ -39,7 +39,6 @@ const RegisterStaffPage = () => {
 // UseEffect to show Success Message
 useEffect(() => {
     if(data) {
-        console.log(data)
         toast.success(data.message)
     }
 
@@ -48,7 +47,6 @@ useEffect(() => {
   // Effect to focus on Error
   useEffect(() => {
     if (Array.isArray(error?.message)) {
-      console.log(error.message);
 
       const errorElement = document.getElementById(error?.message[0].path);
       if (errorElement) {
@@ -57,7 +55,6 @@ useEffect(() => {
         errorElement.style = "outline-color: red";
       }
     }
-    console.log(error)
   }, [error]);
   return (
     <div className="form-page">

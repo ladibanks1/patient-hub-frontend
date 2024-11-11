@@ -54,7 +54,6 @@ const LoginPage = () => {
   const handleForgotPassword = async(e) => {
     e.preventDefault();
     const email = inputRef.current.value;
-    console.log(email);
     if(email === "" ){
       toast.error("Please Enter Your Email");
       return;
@@ -83,6 +82,7 @@ const LoginPage = () => {
             id="email"
             className="mb-10 mt-3"
             required
+            placeholder="olly@gmail.com"
             ref={inputRef}
           />
           {/* Email Error */}

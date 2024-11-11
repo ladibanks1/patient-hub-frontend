@@ -19,7 +19,6 @@ const useGetState = (state = null) => {
         const data = await response.data;
         setStates(data);
       } catch (error) {
-        console.log(error);
         setError(error?.message || error?.response?.data);
       } finally {
         setLoading(false);

@@ -64,7 +64,7 @@ const RegisterPage = () => {
 
           {/* Name */}
           <label htmlFor="name">Name:</label>
-          <input type="text" name="name" id="name" required />
+          <input type="text" name="name" id="name" placeholder="Hospital Name" required />
 
           {/* Name Error */}
           {error.includes("Name") && <p>{error}</p>}
@@ -74,7 +74,7 @@ const RegisterPage = () => {
 
           {/* Phone Number */}
           <label htmlFor="tel">Phone Number:</label>
-          <input type="tel" name="tel" id="tel" required />
+          <input type="tel" name="tel" id="tel" placeholder="Telephone Number" required />
           {/* Phone Number Error */}
           {Array.isArray(error) &&
             error.map((err, index) => (
@@ -86,7 +86,7 @@ const RegisterPage = () => {
 
           {/* Address */}
           <label htmlFor="address">Address</label>
-          <input type="text" name="address" id="address" required />
+          <input type="text" name="address" id="address" placeholder="Address" required />
           {/* Address Error */}
           {Array.isArray(error) &&
             error.map((err, index) => (
@@ -96,7 +96,7 @@ const RegisterPage = () => {
           {/* Email */}
 
           <label htmlFor="email">Email:</label>
-          <input type="email" name="email" id="email" required />
+          <input type="email" name="email" id="email" placeholder="olly@gmail.com" required />
 
           {/* Email Error */}
           {Array.isArray(error) &&

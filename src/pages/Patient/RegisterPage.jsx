@@ -63,7 +63,7 @@ const RegisterPage = () => {
           </h2>
           {/* First Name */}
           <label htmlFor="first_name">First Name:</label>
-          <input type="text" name="first_name" id="first_name" required />
+          <input type="text" name="first_name" id="first_name" placeholder="First Name" required />
           {/* First Name Error */}
           {Array.isArray(error) &&
             error.map((err, index) => (
@@ -73,7 +73,7 @@ const RegisterPage = () => {
             ))}
           {/* Last Name */}
           <label htmlFor="last_name">Last Name:</label>
-          <input type="text" name="last_name" id="last_name" required />
+          <input type="text" name="last_name" id="last_name" placeholder="Last Name" required />
           {/* Last Name Error */}
           {Array.isArray(error) &&
             error.map((err, index) => (
@@ -86,7 +86,7 @@ const RegisterPage = () => {
 
           {/* Phone Number */}
           <label htmlFor="tel">Phone Number:</label>
-          <input type="tel" name="tel" id="tel" required />
+          <input type="tel" name="tel" id="tel" placeholder="Telephone Number" required />
           {/* Phone Number Error */}
           {Array.isArray(error) &&
             error.map((err, index) => (
@@ -128,7 +128,7 @@ const RegisterPage = () => {
           {error?.includes("image") && <p>{error}</p>}
           {/* Email */}
           <label htmlFor="email">Email:</label>
-          <input type="email" name="email" id="email" required />
+          <input type="email" name="email" id="email" placeholder="olly@gmail.com" required />
           {/* Email Error */}
           {Array.isArray(error) &&
             error.map((err, index) => (
