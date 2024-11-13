@@ -43,7 +43,7 @@ const Dashboard = () => {
   // Patient Profile
   useEffect(() => {
     dispatch(patientProfile({ id, token }));
-  }, [id, token , ]);
+  }, [id, token]);
 
   useEffect(() => {
     if (error?.length > 0 || error?.message) {

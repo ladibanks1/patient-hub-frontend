@@ -5,12 +5,12 @@ const Modal = ({ isOpen, onClose, onConfirm, message , type }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed  top-0 left-0 right-0 text-left  flex justify-center items-center">
-      <div className="bg-[#02b4bd65] p-5 rounded-md shadow-md w-[300px] mx-auto">
+    <div className="fixed inset-0 flex items-center justify-center text-left text-white z-10">
+      <div className="bg-dark-blue-800 p-5 rounded-md shadow-md w-[300px] mx-auto">
         {type === "Reschedule" ? (
             <>
-            <label htmlFor="reschedule">Schedule A Date</label>
-            <input type="datetime-local" id="reschedule" className="border p-1 rounded-md" onChange={(e) => setDate(e.target.value)}/>
+            <label htmlFor="reschedule" className="text-white">Schedule A Date:</label>
+            <input type="datetime-local" id="reschedule" className="border p-1 rounded-md mt-4 mb-1" onChange={(e) => setDate(e.target.value)}/>
             </>
         ) : (
             <p>{message}</p>

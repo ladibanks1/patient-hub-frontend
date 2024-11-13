@@ -2,6 +2,10 @@
 
 /* Home Page And Dashboard   Style*/
 @layer components {
+    *{
+      font-family: "Inter" , sans-serif;
+    }
+
   .home-patient-dashboard {
     @apply grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_3fr] my-10 ;
   }
@@ -29,7 +33,7 @@
 
   /* Home Page Components */
   .table {
-    @apply w-[93%] mx-auto p-3 md:p-5 my-10 border-dark-blue-800 border-[1px] rounded-lg overflow-auto;
+    @apply  w-[80%] md:w-[93%] mx-auto p-3 md:p-5 my-10 border-dark-blue-800 border-[1px] rounded-lg overflow-auto;
   }
 
   .table table {
@@ -41,7 +45,7 @@
   }
 
   .table th {
-    @apply p-2 md:p-2 md:py-4 text-xs lg:text-base ;
+    @apply p-1 md:p-2 md:py-4 text-xs lg:text-[15px]   ;
   }
 
   .table-body tr {
@@ -52,7 +56,7 @@
   }
 
   .table td {
-    @apply text-xs lg:text-base;
+    @apply text-xs lg:text-[15px] ;
   }
 
   .extras {
@@ -62,4 +66,13 @@
   .table{
       box-shadow: 0.2px 0.2px 10px #2e2f5d41;
   }
+
+  .appointment  span:first-child{
+    @apply me-1 font-semibold;
+  }
+  .appointment article:not(article:last-child){
+    @apply leading-10
+  }
+
+
 }

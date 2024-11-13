@@ -8,6 +8,7 @@ import {
 // Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
+import 'react-tooltip/dist/react-tooltip.css'
 
 // Layouts
 import HomeLayout from "./layout/HomeLayout";

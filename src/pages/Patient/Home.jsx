@@ -51,11 +51,23 @@ const Home = () => {
               </tr>
             </thead>
             <tbody className="table-body">
+              {appointments.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="text-2xl font-bold text-dark-blue-800 text-center py-4"
+                  >
+                    No Appointment Found
+                  </td>
+                </tr>
+              )}
               {appointments.map(
                 (
                   { doctor, hospital, appointment_date, status, _id },
                   index
                 ) => {
+                  const dates = new Date(appointment_date).getTime();
+                  const today = Date.now();
                   const date = new Date(appointment_date).toDateString();
                   const time = new Date(appointment_date).toLocaleTimeString();
                   return (
@@ -73,7 +85,7 @@ const Home = () => {
                         />
                       </td>
                       {popup && currentIndex === index && (
-                        <Popup id={currentId} />
+                        <Popup id={currentId} dates={dates} today={today} />
                       )}
                     </tr>
                   );

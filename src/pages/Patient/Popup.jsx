@@ -8,8 +8,9 @@ import { useState } from "react";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-const Popup = ({ id }) => {
+const Popup = ({ id, dates, today }) => {
   const { token } = useSelector((state) => state.auth);
+
   const { id: patientId } = useOutletContext();
   const dispatch = useDispatch();
 
@@ -76,7 +77,12 @@ const Popup = ({ id }) => {
             dispatch(getAppointment({ id: patientId, token }));
           }
         } catch (error) {
-          toast.error(error.response.data.message[0].message);
+          if (Array.isArray(error.response.data.message)) {
+            toast.error(error.response.data.message[0].message);
+          }
+          if (!Array.isArray(error.response.data.message)) {
+            toast.error(error.response.data.message);
+          }
         }
         break;
       default:
@@ -106,8 +112,9 @@ const Popup = ({ id }) => {
       <div className="rounded-md absolute bg-[#02b4bd50] sm:-right-28 top-0 z-20 p-3 flex flex-col gap-3">
         <div>
           <button
-            className="bg-gray-400 p-2 hover:bg-gray-600 hover:border-none hover:text-white w-[95%]"
+            className="bg-gray-400 p-2 hover:bg-gray-600 hover:border-none hover:text-white w-[95%] disabled:hover:cursor-not-allowed"
             onClick={handleCancel}
+            disabled={dates > today ? false : true}
           >
             Cancel
           </button>
@@ -122,8 +129,9 @@ const Popup = ({ id }) => {
         </div>
         <div>
           <button
-            className="bg-green-500 p-2 hover:bg-green-700 hover:border-none hover:text-white"
+            className="bg-green-500 p-2 hover:bg-green-700 hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
             onClick={handleReschedule}
+            disabled={dates > today ? false : true}
           >
             Reschedule
           </button>

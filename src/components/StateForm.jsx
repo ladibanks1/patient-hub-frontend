@@ -3,8 +3,8 @@ import useGetState from "../hooks/useGetState";
 import "../css/Form.css";
 
 // State and LGas Component
-const State = () => {
-  const [selectedState, setSelectedState] = useState("");
+const State = ({state = "" , LGA  , handleChange = () => {}}) => {
+  const [selectedState, setSelectedState] = useState(state);
   const {
     states,
     loading,
@@ -13,14 +13,16 @@ const State = () => {
   } = useGetState(selectedState);
   return (
     <>
-    <label htmlFor="state">State: </label>
+    <label htmlFor="state">State:</label>
       <select
         name="state"
         id="state"
         className="w-full"
         required
-        onChange={() => {
-          setSelectedState(event.target.value);
+        value={selectedState}
+        onChange={(e) => {
+          setSelectedState(e.target.value);
+          handleChange(e);
         }}
       >
         <option value="">Select State</option>
@@ -40,7 +42,7 @@ const State = () => {
       {selectedState && (
         <>
         <label htmlFor="LGA">Local Goverment Area: </label>
-          <select name="LGA" className="w-full" required id="LGA">
+          <select name="LGA" className="w-full" id="LGA" value={LGA} onChange={handleChange} required>
             <option value="">Select LGA</option>
             {lga.map((lga, index) => (
               <option value={lga} key={index}>

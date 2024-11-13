@@ -37,6 +37,41 @@ export const getAppointment = createAsyncThunk(
   }
 );
 
+export const updateProfile = createAsyncThunk(
+  "patient/updateProfile",
+  async ({ data, token, id }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.put(
+        `/patient/update-profile/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteProfile = createAsyncThunk(
+  "patient/deleteProfile",
+  async ({ id, token }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.delete(`/patient/delete-profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 const patientSlice = createSlice({
   name: "patient",
   initialState: {
@@ -44,6 +79,7 @@ const patientSlice = createSlice({
     patient: {},
     appointments: [],
     error: [],
+    updateLoading: false,
   },
   reducers: {
     clearState: (state) => {
@@ -78,6 +114,30 @@ const patientSlice = createSlice({
       })
       .addCase(getAppointment.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(updateProfile.pending, (state) => {
+        state.updateLoading = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.patient = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(deleteProfile.pending, (state) => {
+        state.updateLoading = true;
+      })
+      .addCase(deleteProfile.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.patient = action.payload;
+      })
+      .addCase(deleteProfile.rejected, (state, action) => {
+        state.updateLoading = false;
         state.error = action.payload;
       });
   },
