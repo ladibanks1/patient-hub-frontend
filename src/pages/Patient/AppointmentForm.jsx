@@ -143,7 +143,7 @@ const AppointmentForm = () => {
             required
           >
             <option value="">Select Hospital</option>
-            {sortedHospital.map((clinic, index) => (
+            {sortedHospital?.map((clinic, index) => (
               <option value={clinic._id} key={index}>
                 {clinic.name}
               </option>
@@ -156,7 +156,7 @@ const AppointmentForm = () => {
               <label htmlFor="doctor">Available Doctors:</label>
               <select name="doctor" id="doctor" required>
                 <option value="">Select Doctor</option>
-                {doctors.map((doctor, index) => {
+                {doctors?.map((doctor, index) => {
                   return (
                     <option value={doctor._id} key={index}>
                       {loadDoc ? (
