@@ -1,24 +1,34 @@
-import { useContext, useEffect, useState } from "react";
-
-import signUpImage from "../../assets/images/signUpDoc.png";
-import "../../css/Form.css";
-import { toast } from "react-toastify";
-import usePost from "../../hooks/usePost";
-import { AuthContext } from "../../context/Authentication";
+import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
-import { hospitalProfile } from "../../redux/slices/hospitalSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import signUpImage from "../assets/images/signUpDoc.png";
+import { useOutletContext, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { editStaff } from "../redux/slices/staffSlice";
+import { toast } from "react-toastify";
 
-// Register Staff
-const RegisterStaffPage = () => {
+const EditStaff = () => {
+  const { hospital, token } = useOutletContext();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { loading, message, error } = useSelector((state) => state.staff);
 
-  // Hospital Id
-  const { id, token } = useContext(AuthContext);
+  console.log(loading, message, error);
 
+  const location = useLocation();
   const docRegex = /doctor/i;
+  const { staffs } = hospital.data;
+
+  //   Get Staff Id
+  const { id } = location.state;
+
+  //   Get Staff
+  const staff = staffs.find((staff) => staff._id === id);
+
+  //   Value For Staff
+  const [selectedPosition, setSelectedPosition] = useState(staff.position);
+  const [firstName, setFirstName] = useState(staff.first_name);
+  const [lastName, setLastName] = useState(staff.last_name);
+  const [email, setEmail] = useState(staff.email);
+  const [specialism, setSpecialism] = useState(staff.specialism);
 
   const hospitalPosition = [
     "Doctor",
@@ -29,41 +39,34 @@ const RegisterStaffPage = () => {
     "Medical Assistant",
     "Other",
   ];
-  const [selectedPosition, setSelectedPosition] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
-  //   Custom Hook For sending a post Request
-  const { data, error, loading, postData } = usePost("/auth/register-staff");
-
-  //   Handle Form Submission
+  //   Handle Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = new FormData(e.target);
-    form.append("hospital_id", id);
-    postData(form);
-    setSubmitted(true);
+
+    const body = {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      position: selectedPosition,
+      specialism,
+    };
+
+    dispatch(
+      editStaff({
+        id: staff._id,
+        token,
+        body,
+      })
+    );
   };
 
-  // UseEffect to show Success Message
   useEffect(() => {
-    if (data && submitted) {
-      toast.success(data.message);
-      navigate("/hospital-dashboard/staffs");
-      dispatch(hospitalProfile({id, token}))
+    if (!loading && message && (error.length === 0 || Object.keys(error).length === 0)) {
+      toast.success(message);
     }
-  }, [data]);
+  }, [message, loading]);
 
-  // Effect to focus on Error
-  useEffect(() => {
-    if (Array.isArray(error?.message)) {
-      const errorElement = document.getElementById(error?.message[0].path);
-      if (errorElement) {
-        errorElement.focus();
-        errorElement.scrollTo();
-        errorElement.style = "outline-color: red";
-      }
-    }
-  }, [error]);
   return (
     <div className="form-page">
       <article className="md:w-1/2">
@@ -74,7 +77,14 @@ const RegisterStaffPage = () => {
         <form onSubmit={handleSubmit}>
           {/* First Name */}
           <label htmlFor="first_name">First Name:</label>
-          <input type="text" name="first_name" id="first_name" required />
+          <input
+            type="text"
+            name="first_name"
+            id="first_name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
           {/* First Name Error */}
           {Array.isArray(error?.message) &&
             error.message.map((err, index) => (
@@ -83,8 +93,13 @@ const RegisterStaffPage = () => {
 
           {/* Last Name */}
           <label htmlFor="last_name">Last Name:</label>
-          <input type="text" name="last_name" required />
-
+          <input
+            type="text"
+            name="last_name"
+            value={lastName}
+            required
+            onChange={(e) => setLastName(e.target.value)}
+          />
           {/* Last Name Error */}
           {Array.isArray(error?.message) &&
             error.message.map((err, index) => (
@@ -93,7 +108,14 @@ const RegisterStaffPage = () => {
 
           {/* Email */}
           <label htmlFor="email">Email:</label>
-          <input type="email" name="email" id="email" required />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
           {/* Email Error */}
           {Array.isArray(error?.message) &&
@@ -108,7 +130,13 @@ const RegisterStaffPage = () => {
           <select
             name="position"
             id="position"
-            onChange={(e) => setSelectedPosition(e.target.value)}
+            onChange={(e) => {
+              setSelectedPosition(e.target.value);
+              if (!docRegex.test(e.target.value)) {
+                setSpecialism("");
+              }
+            }}
+            value={selectedPosition}
             required
           >
             <option value="">Select Position</option>
@@ -127,7 +155,6 @@ const RegisterStaffPage = () => {
             ))}
 
           {/* Specialism for Doctors Only */}
-
           {docRegex.test(selectedPosition) && (
             <>
               <label htmlFor="specialism">Specialism:</label>
@@ -135,6 +162,8 @@ const RegisterStaffPage = () => {
                 type="specialism"
                 name="specialism"
                 id="specialism"
+                value={specialism}
+                onChange={(e) => setSpecialism(e.target.value)}
                 required
               />
             </>
@@ -144,7 +173,7 @@ const RegisterStaffPage = () => {
             {loading ? (
               <HashLoader size={30} />
             ) : (
-              <button type="submit">Register</button>
+              <button type="submit">Update Profile</button>
             )}
           </div>
         </form>
@@ -153,4 +182,4 @@ const RegisterStaffPage = () => {
   );
 };
 
-export default RegisterStaffPage;
+export default EditStaff;

@@ -18,19 +18,25 @@ const Home = () => {
     SetCurrentIndex(index);
   };
 
+  const confirmedAppoinments = appointments?.filter(
+    (appointments) => appointments.status === "Confirmed"
+  );
+  const cancelledAppoinments = appointments?.filter(
+    (appointments) => appointments.status === "Cancelled"
+  );
   if (response === undefined || response.length == 0) return;
   return (
     <section className="overview ">
       <article className="appointment">
         <div className="brief md:bg-light-blue md:p-8 p-4 text-center sm:text-left">
           <p>
-            Total Appointment <span>{2}</span>
+            Total Appointment <span>{appointments.length}</span>
           </p>
           <p>
-            Confirmed Appointment <span>{3}</span>
+            Confirmed Appointment <span>{confirmedAppoinments.length}</span>
           </p>
           <p>
-            Canceled Appointment <span>{1}</span>
+            Canceled Appointment <span>{cancelledAppoinments.length}</span>
           </p>
         </div>
         <div className="table">

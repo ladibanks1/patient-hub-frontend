@@ -36,6 +36,7 @@ import HospitalOverview from "./pages/Hospital/Overview";
 import HospitalStaffs from "./pages/Hospital/Staffs";
 import HospitalProfileSettings from "./pages/Hospital/ProfileSettings";
 import HospitalPatientRecords from "./pages/Hospital/PatientRecords";
+import EditStaff from "./components/EditStaff";
 
 function App() {
   // Routes
@@ -66,6 +67,7 @@ function App() {
           {/* Hospital Route */}
           <Route path="hospital-dashboard" element={<HospitalDashboard />}>
             <Route path="register-staff" element={<RegisterStaffPage />} />
+            <Route path="edit-staff" element={<EditStaff />} />
             <Route index element={<HospitalOverview />} />
             <Route path="staffs" element={<HospitalStaffs />} />
             <Route

@@ -81,6 +81,7 @@ const AppointmentForm = () => {
       setDoctors(data);
     } catch (error) {
       const err = error.response.data;
+      toast.error(err.message); // Error Message
     } finally {
       setLoadDoc(false);
     }

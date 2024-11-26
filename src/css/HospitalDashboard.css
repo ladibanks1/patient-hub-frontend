@@ -1,13 +1,32 @@
 @tailwind components;
 
+@layer components {
+  .staff-overview {
+    @apply flex flex-row flex-wrap gap-8 py-10 px-20 font-[satoshi];
+  }
+  .staff-overview section {
+    width: 100%;
+    max-width: 250px;
+    @apply bg-sky-blue text-white  text-xl p-3 rounded-xl flex flex-col justify-between;
+  }
+  .top-view{
+    @apply font-bold
+  }
 
-@layer components{
-    .staff-overview{
-        @apply flex flex-row flex-wrap gap-8 p-5
-    }
-    .staff-overview section{
-        width: 100%;
-        max-width: 200px;
-        @apply bg-sky-blue text-white font-bold text-xl p-3 rounded-xl;
-    }
+  .bottom-view p:last-child{
+    @apply  font-bold
+  }
+  /* Special Roole */
+  .special {
+    @apply px-10 flex flex-wrap;
+  }
+  .special > article {
+    @apply rounded-lg max-w-[200px] h-[70px] w-full bg-fade-dark-blue ms-4 mt-5 text-white text-2xl flex items-center justify-center;
+  }
+
+
+  /* Staff Dashboard */
+  .span-bold span{
+    @apply font-bold
+  }
 }

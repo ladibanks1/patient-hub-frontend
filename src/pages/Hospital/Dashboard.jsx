@@ -9,7 +9,6 @@ import {
   clearError,
 } from "../../redux/slices/hospitalSlice";
 import { HashLoader } from "react-spinners";
-import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const { userType, id, token } = useContext(AuthContext);
@@ -87,7 +86,7 @@ const Dashboard = () => {
         </section>
         <section>
           {!loading && Object.keys(hospital).length > 0 && (
-            <Outlet context={{ hospital, appointments }} />
+            <Outlet context={{ hospital, appointments, token, id }} />
           )}
         </section>
       </div>
