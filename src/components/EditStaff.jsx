@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { HashLoader } from "react-spinners";
 import signUpImage from "../assets/images/signUpDoc.png";
-import { useOutletContext, useLocation } from "react-router-dom";
+import { useOutletContext, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { editStaff } from "../redux/slices/staffSlice";
+import { hospitalProfile } from "../redux/slices/hospitalSlice";
 import { toast } from "react-toastify";
+import { clearState } from "../redux/slices/staffSlice.js";
 
 const EditStaff = () => {
   const { hospital, token } = useOutletContext();
   const dispatch = useDispatch();
-  const { loading, message, error } = useSelector((state) => state.staff);
-
-  console.log(loading, message, error);
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.staff);
 
   const location = useLocation();
   const docRegex = /doctor/i;
@@ -58,14 +59,13 @@ const EditStaff = () => {
         token,
         body,
       })
-    );
+    ).then((res) => {
+      if (!res.error) {
+        dispatch(clearState());
+        toast.success(res.payload.message);
+      }
+    });
   };
-
-  useEffect(() => {
-    if (!loading && message && (error.length === 0 || Object.keys(error).length === 0)) {
-      toast.success(message);
-    }
-  }, [message, loading]);
 
   return (
     <div className="form-page">

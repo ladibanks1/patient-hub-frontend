@@ -51,7 +51,13 @@ const staffSlice = createSlice({
     message: "",
     error: [],
   },
-  reducers: {},
+  reducers: {
+    clearState: (state) => {
+      state.error = [];
+      state.staff = {};
+      state.message = {};
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(deleteStaff.pending, (state) => {
@@ -72,7 +78,7 @@ const staffSlice = createSlice({
       .addCase(editStaff.fulfilled, (state, action) => {
         state.loading = false;
         state.staff = action.payload.data;
-        state.message = action.payload.message
+        state.message = action.payload.message;
       })
       .addCase(editStaff.rejected, (state, action) => {
         state.loading = false;
@@ -81,4 +87,5 @@ const staffSlice = createSlice({
   },
 });
 
+export const { clearState } = staffSlice.actions;
 export default staffSlice.reducer;
