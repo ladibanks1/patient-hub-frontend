@@ -2,7 +2,11 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/Authentication";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { patientProfile, clearError , getAppointment } from "../../redux/slices/patientSlice";
+import {
+  patientProfile,
+  clearError,
+  getAppointment,
+} from "../../redux/slices/patientSlice";
 import { HashLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { NavLink, Outlet } from "react-router-dom";
@@ -24,13 +28,12 @@ const Dashboard = () => {
 
   // Get Appointments
   useEffect(() => {
-    dispatch(getAppointment({id , token}));
-  }, [id , token]);
+    dispatch(getAppointment({ id, token }));
+  }, [id, token]);
 
   // Patient Slice Details
   const { patient, loading, error } = useSelector((state) => state.patient);
 
-  
   // Navbar Active Controller
   const navClass = ({ isActive }) =>
     isActive ? " border-fade-dark-blue border-b-2 " : "";
@@ -49,6 +52,10 @@ const Dashboard = () => {
     if (error?.length > 0 || error?.message) {
       if (Array.isArray(error)) {
         toast.error(error[0].message);
+        return;
+      }
+      if (error.message?.includes("jwt must be provided")) {
+        navigate("/login");
         return;
       }
       toast.error(error.message);

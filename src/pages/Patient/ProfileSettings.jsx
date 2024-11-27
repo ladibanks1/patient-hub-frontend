@@ -73,6 +73,7 @@ const Profile = () => {
         toast.success(res.payload.message);
         sessionStorage.removeItem("patientHub_token");
         navigate("/");
+        dispatch(clearState());
       });
     }
   };

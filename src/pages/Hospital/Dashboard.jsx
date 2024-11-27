@@ -66,7 +66,7 @@ const Dashboard = () => {
         <section className="header">
           <div className="flex items-center md:bg-light-blue p-4 md:w-full">
             <span className="text-xl text-dark-blue-800 font-bold ms-3">
-              {"JOLAD"}
+              {hospital?.data?.name}
             </span>
           </div>
           <div className="navigation p-5">

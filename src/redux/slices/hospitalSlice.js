@@ -39,10 +39,47 @@ export const hospitalAppointments = createAsyncThunk(
   }
 );
 
+export const updateHospitalProfile = createAsyncThunk(
+  "hospital/updateProfile",
+  async ({ id, token, data }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.put(
+        `/hospital/update-profile/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteProfile = createAsyncThunk(
+  "hospital/deleteProfile",
+  async ({ id, token }, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.delete(`/hospital/delete-profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const hospitalSlice = createSlice({
   name: "hospital",
   initialState: {
     loading: false,
+    updateLoading: false,
     hospital: {},
     error: [],
     appointments: [],
@@ -75,6 +112,31 @@ const hospitalSlice = createSlice({
         state.appointments = action.payload;
       })
       .addCase(hospitalAppointments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(updateHospitalProfile.pending, (state) => {
+        state.updateLoading = true;
+      })
+      .addCase(updateHospitalProfile.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.hospital = action.payload;
+      })
+      .addCase(updateHospitalProfile.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(deleteProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.hospital = {};
+        state.appointments = [];
+      })
+      .addCase(deleteProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
