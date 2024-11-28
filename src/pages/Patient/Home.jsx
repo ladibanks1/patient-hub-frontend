@@ -91,7 +91,7 @@ const Home = () => {
                         />
                       </td>
                       {popup && currentIndex === index && (
-                        <Popup id={currentId} dates={dates} today={today} userType={"Patient"} />
+                        <Popup id={currentId} dates={dates} today={today} userType={"Patient"}  closePopup={Setpopup}/>
                       )}
                     </tr>
                   );

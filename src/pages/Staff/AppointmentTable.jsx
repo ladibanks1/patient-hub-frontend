@@ -124,6 +124,7 @@ const AppointmentTable = () => {
                             dates={dates}
                             today={today}
                             userType={"Staff"}
+                            closePopup={Setpopup}
                           />
                         )}
                       </tr>

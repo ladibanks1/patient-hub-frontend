@@ -10,7 +10,7 @@ import { AuthContext } from "../context/Authentication";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-const Popup = ({ id, dates, today, userType }) => {
+const Popup = ({ id, dates, today, userType, closePopup }) => {
   const { token } = useContext(AuthContext);
 
   const { id: patientId, staff } = useOutletContext();
@@ -32,11 +32,13 @@ const Popup = ({ id, dates, today, userType }) => {
   const onCloseModal = () => {
     setOpenModal(false);
     setConfirm(false);
+    closePopup(false);
   };
 
   const onConfirmModal = async (date) => {
     setConfirm(true);
     setOpenModal(false);
+    closePopup(false);
 
     // Switch For Popup Actions
 

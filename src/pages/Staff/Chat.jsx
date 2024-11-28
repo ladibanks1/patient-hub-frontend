@@ -8,13 +8,13 @@ const URL = import.meta.env.VITE_BASE_URL;
 const socket = io(URL);
 
 const Chat = () => {
-  const { patient } = useOutletContext();
-  const { doctors } = patient.data;
+  const { staff: doctor } = useOutletContext();
+  const { patients } = doctor;
 
   const [message, setMessage] = useState("");
   const [room, setRoom] = useState("");
   const [prevMessages, setPrevMessages] = useState([]);
-  const [doctorId, setDoctorId] = useState("");
+  const [patientId, setPatientId] = useState("");
 
   useEffect(() => {
     if (room) {
@@ -36,54 +36,52 @@ const Chat = () => {
   }, [room]);
 
   const handleClick = () => {
-    const patientId = patient.data._id;
+    const doctorId = doctor._id;
     if (message.trim()) {
       socket.emit("send_message", {
-        patientId,
         doctorId,
+        patientId,
         message,
-        senderRole: "Patient",
+        senderRole: "Doctor",
       });
       setMessage("");
     }
   };
 
   const handleUser = (id) => {
-    const patientId = patient.data._id;
-    if (patientId && id) {
-      const roomName = `${patientId}-${id}`;
+    const doctorId = doctor._id;
+    if (doctorId && id) {
+      const roomName = `${id}-${doctorId}`;
       setRoom(roomName);
-      setDoctorId(id);
+      setPatientId(id);
       setPrevMessages([]);
-      socket.emit("join_room", { patientId, doctorId: id });
+      socket.emit("join_room", { doctorId, patientId: id });
     }
   };
 
-  const chosenDoctor = doctors.find(
-    (doctor) => doctor._id === doctorId
-  )?.last_name;
+  const chosenPatient = patients.find((patient) => patient._id === patientId);
 
   return (
     <div className="bg-[#02b4bd2c] p-5">
       <div className="flex gap-6 w-full flex-wrap">
-        {doctors.map(({ picture, last_name, _id }, id) => (
+        {patients.map(({ picture, last_name, first_name, _id }, id) => (
           <div key={id} className="cursor-pointer w-14">
             <img src={picture} alt="doctor" onClick={() => handleUser(_id)} />
-            <p className="text-center text-sm">{`Dr. ${last_name}`}</p>
+            <p className="text-center text-sm">{`${first_name} ${last_name}`}</p>
           </div>
         ))}
       </div>
 
-      {doctorId && (
+      {patientId && (
         <section className="h-[80vh] bg-[#02b4bd2c] mt-5 rounded overflow-auto relative">
-         <div className="cursor-pointer bg-[#02b4bdd5] sticky py-2 top-0">
+          <div className="cursor-pointer bg-[#02b4bdd5] sticky py-2 top-0">
             <img
-              src={chosenDoctor.picture}
+              src={chosenPatient.picture}
               alt="doctor"
               className="w-10 inline"
               onClick={() => handleUser(_id)}
             />
-            <p className="text-sm inline">{`${chosenDoctor.first_name} ${chosenDoctor.last_name}`}</p>
+            <p className="text-sm inline">{`${chosenPatient.first_name} ${chosenPatient.last_name}`}</p>
           </div>
           <div className="messages">
             {prevMessages.length === 0 ? (
@@ -93,9 +91,10 @@ const Chat = () => {
                 <div
                   key={index}
                   className={`message ${
-                    msg.senderRole === "Patient" ? "patients" : "doctor"
+                    msg.senderRole === "Patient" ? "patient" : "doctors"
                   }`}
                 >
+                  {console.log(msg)}
                   <p>{msg.message}</p>
                   <p className="message-time">{msg.time}</p>
                 </div>
@@ -105,7 +104,7 @@ const Chat = () => {
         </section>
       )}
 
-      {doctorId && (
+      {patientId && (
         <section className="flex items-center gap-5 mt-5">
           <input
             type="text"

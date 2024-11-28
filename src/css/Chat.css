@@ -1,0 +1,22 @@
+@tailwind components;
+
+@layer components {
+  .patients,
+  .doctors {
+    @apply text-right w-fit px-5 self-end  bg-white py-2;
+  }
+
+  .patient,
+  .doctor {
+    @apply bg-dark-blue-800 w-fit text-white px-5;
+  }
+  .messages {
+    @apply flex flex-col gap-2 p-5;
+  }
+  .messages > * {
+    @apply rounded-lg;
+  }
+  .message-time {
+    @apply text-xs text-slate-400 text-right;
+  }
+}
