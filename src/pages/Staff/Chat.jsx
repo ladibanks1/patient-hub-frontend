@@ -54,7 +54,7 @@ const Chat = () => {
       const roomName = `${id}-${doctorId}`;
       setRoom(roomName);
       setPatientId(id);
-      setPrevMessages([]);
+      setPrevMessages(JSON.parse(localStorage.getItem(roomName) || []));
       socket.emit("join_room", { doctorId, patientId: id });
     }
   };

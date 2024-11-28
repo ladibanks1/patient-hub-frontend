@@ -54,14 +54,14 @@ const Chat = () => {
       const roomName = `${patientId}-${id}`;
       setRoom(roomName);
       setDoctorId(id);
-      setPrevMessages([]);
+      setPrevMessages(JSON.parse(localStorage.getItem(roomName) || []));
       socket.emit("join_room", { patientId, doctorId: id });
     }
   };
 
   const chosenDoctor = doctors.find(
     (doctor) => doctor._id === doctorId
-  )?.last_name;
+  )
 
   return (
     <div className="bg-[#02b4bd2c] p-5">

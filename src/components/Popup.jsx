@@ -10,7 +10,15 @@ import { AuthContext } from "../context/Authentication";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-const Popup = ({ id, dates, today, userType, closePopup }) => {
+const Popup = ({
+  id,
+  dates,
+  today,
+  userType,
+  closePopup,
+  hospital,
+  doctor,
+}) => {
   const { token } = useContext(AuthContext);
 
   const { id: patientId, staff } = useOutletContext();
@@ -35,18 +43,17 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
     closePopup(false);
   };
 
-  const onConfirmModal = async (date) => {
+  const onConfirmModal = async (date = "", rating = 0) => {
     setConfirm(true);
     setOpenModal(false);
     closePopup(false);
 
     // Switch For Popup Actions
-
     switch (message) {
       case "Cancel":
         try {
           const response = await apiClient.get(
-            `appointment/cancel-appointment/${id}`
+            `/appointment/cancel-appointment/${id}`
           );
           if (response.data) {
             toast.success(response.data.message);
@@ -63,7 +70,7 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
       case "Delete":
         try {
           const response = await apiClient.delete(
-            `appointment/delete-appointment/${id}`
+            `/appointment/delete-appointment/${id}`
           );
           if (response.data) {
             toast.success(response.data.message);
@@ -79,7 +86,7 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
       case "Confirm":
         try {
           const response = await apiClient.get(
-            `appointment/confirm-appointment/${id}`
+            `/appointment/confirm-appointment/${id}`
           );
           if (response.data) {
             toast.success(response.data.message);
@@ -96,7 +103,7 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
       case "Reschedule":
         try {
           const response = await apiClient.get(
-            `appointment/reschedule-appointment/${id}?date=${date}`
+            `/appointment/reschedule-appointment/${id}?date=${date}`
           );
           if (response.data) {
             toast.success(response.data.message);
@@ -114,6 +121,30 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
           }
         }
         break;
+
+      case "Rate Doctor":
+        try {
+          const response = await apiClient.get(
+            `/staff/rate-staff/${doctor._id}?rating=${rating}`
+          );
+          toast.success(response.data.message);
+        } catch (error) {
+          console.log(error)
+          toast.error(error.response.data.message);
+        }
+        break;
+
+      case "Rate Hospital":
+        try {
+          const response = await apiClient.get(
+            `/hospital/rate-hospital/${hospital._id}?rating=${rating}`
+          );
+          toast.success(response.data.message);
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+        break;
+
       default:
         break;
     }
@@ -140,6 +171,18 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
   const handleConfirm = () => {
     setModalType("");
     setMessage("Confirm");
+    setOpenModal(true);
+  };
+
+  const handleDocRating = () => {
+    setModalType("Rating");
+    setOpenModal(true);
+    setMessage("Rate Doctor");
+  };
+
+  const handleHospitalRating = () => {
+    setModalType("Rating");
+    setMessage("Rate Hospital");
     setOpenModal(true);
   };
 
@@ -172,10 +215,34 @@ const Popup = ({ id, dates, today, userType, closePopup }) => {
             Reschedule
           </button>
         </div>
+        {userType === "Patient" && (
+          <>
+            <div>
+              <button
+                className="bg-dark-blue-800 p-2 px-4 hover:bg-fade-dark-blue hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
+                onClick={handleDocRating}
+              >
+                Rate Doc
+              </button>
+            </div>
+            <div>
+              <button
+                className="bg-blue-500 p-2 hover:bg-blue-700 hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
+                onClick={handleHospitalRating}
+              >
+                Rate Hospital
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <Modal
         isOpen={openModal}
-        message={`Are You Sure You Want to ${message} the Appointment?`}
+        message={
+          modalType === "Rating"
+            ? message
+            : `Are You Sure You Want to ${message} the Appointment?`
+        }
         type={modalType}
         onClose={onCloseModal}
         onConfirm={onConfirmModal}
