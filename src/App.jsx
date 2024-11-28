@@ -8,7 +8,7 @@ import {
 // Toastify
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.css";
-import 'react-tooltip/dist/react-tooltip.css'
+import "react-tooltip/dist/react-tooltip.css";
 
 // Layouts
 import HomeLayout from "./layout/HomeLayout";
@@ -37,6 +37,9 @@ import HospitalStaffs from "./pages/Hospital/Staffs";
 import HospitalProfileSettings from "./pages/Hospital/ProfileSettings";
 import HospitalPatientRecords from "./pages/Hospital/PatientRecords";
 import EditStaff from "./components/EditStaff";
+
+// Staff Pages
+import StaffDashboard from "./pages/Staff/Dashboard";
 
 function App() {
   // Routes
@@ -75,6 +78,11 @@ function App() {
               element={<HospitalPatientRecords />}
             />
             <Route path="settings" element={<HospitalProfileSettings />} />
+          </Route>
+
+          {/* Staff Route */}
+          <Route path="staff-dashboard" element={<StaffDashboard />}>
+            <Route path="chat" element={<></>} />
           </Route>
         </Route>
 

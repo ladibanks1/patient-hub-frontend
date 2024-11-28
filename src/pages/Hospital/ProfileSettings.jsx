@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { updateHospitalProfile } from "../../redux/slices/hospitalSlice";
@@ -8,6 +8,7 @@ import ProfileForm from "./ProfileForm";
 import { deleteProfile } from "../../redux/slices/hospitalSlice";
 import { useNavigate } from "react-router-dom";
 import { clearState } from "../../redux/slices/authSlice";
+import Modal from "../../components/Modal";
 
 const ProfileSettings = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,9 @@ const ProfileSettings = () => {
     );
   };
 
+  // Handle Deletion and Modal
+
+  const [isOpen, setIsOpen] = useState(false);
   const handleDelete = () => {
     dispatch(deleteProfile({ id, token })).then((res) => {
       if (res?.error) {
@@ -64,17 +68,34 @@ const ProfileSettings = () => {
     });
   };
 
+  const handleDeleteClick = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   return (
-    <ProfileForm
-      {...{
-        handleChange,
-        handleSubmit,
-        hospitalForm,
-        error,
-        loading,
-        handleDelete,
-      }}
-    />
+    <>
+      <ProfileForm
+        {...{
+          handleChange,
+          handleSubmit,
+          hospitalForm,
+          error,
+          loading,
+          handleClick: handleDeleteClick,
+        }}
+      />
+      <Modal
+        isOpen={isOpen}
+        message={
+          "Are you sure you want to delete your profile? This action cannot be undone"
+        }
+        onClose={handleClose}
+        onConfirm={handleDelete}
+      />
+    </>
   );
 };
 

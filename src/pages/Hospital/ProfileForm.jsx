@@ -3,11 +3,11 @@ import { HashLoader } from "react-spinners";
 
 const ProfileForm = ({
   handleChange,
-  handleDelete,
   handleSubmit,
   hospitalForm,
   error,
   loading,
+  handleClick,
 }) => {
   return (
     <div className="p-7">
@@ -15,7 +15,7 @@ const ProfileForm = ({
         <h1 className="text-2xl font-bold text-dark-blue-800 mb-10">Profile</h1>
         <button
           className="m-0 mb-10 bg-red-600 hover:border-red-600"
-          onClick={handleDelete}
+          onClick={handleClick}
         >
           Delete Profile
         </button>

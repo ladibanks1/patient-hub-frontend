@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearState } from "../../redux/slices/authSlice";
-import PatientForm from "../../components/PatientProfileForm";
+import PatientForm from "./PatientProfileForm";
 import {
   updateProfile,
   clearError,
@@ -10,6 +10,8 @@ import {
 import { HashLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
+
 const Profile = () => {
   const { patient, updateLoading, error } = useSelector(
     (state) => state.patient
@@ -59,23 +61,27 @@ const Profile = () => {
     });
   };
 
-  // Delete Profile
+  // Delete Profile And Its Modal
+  const [isOpen, setIsOpen] = useState(false);
   const handleDelete = () => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete your profile? \nThis action cannot be undone \nClick OK to proceed"
-    );
-    if (confirm) {
-      dispatch(deleteProfile({ id: data._id, token })).then((res) => {
-        if (res.error) {
-          toast.error(res.payload?.message);
-          return;
-        }
-        toast.success(res.payload.message);
-        sessionStorage.removeItem("patientHub_token");
-        navigate("/");
-        dispatch(clearState());
-      });
-    }
+    dispatch(deleteProfile({ id: data._id, token })).then((res) => {
+      if (res.error) {
+        toast.error(res.payload?.message);
+        return;
+      }
+      toast.success(res.payload.message);
+      sessionStorage.removeItem("patientHub_token");
+      navigate("/");
+      dispatch(clearState());
+    });
+  };
+
+  const handleDeleteClick = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   if (updateLoading)
@@ -85,17 +91,27 @@ const Profile = () => {
       </div>
     );
   return (
-    <PatientForm
-      {...{
-        handleChange,
-        handleSubmit,
-        patientForm,
-        updateLoading,
-        error,
-        handleDelete,
-      }}
-      loading={updateLoading}
-    />
+    <>
+      <PatientForm
+        {...{
+          handleChange,
+          handleSubmit,
+          patientForm,
+          updateLoading,
+          error,
+          handleClick: handleDeleteClick,
+        }}
+        loading={updateLoading}
+      />
+      <Modal
+        isOpen={isOpen}
+        message={
+          "Are you sure you want to delete your profile? This action cannot be undone"
+        }
+        onClose={handleClose}
+        onConfirm={handleDelete}
+      />
+    </>
   );
 };
 

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { HashLoader } from "react-spinners";
-import State from "./StateForm";
+import State from "../../components/StateForm";
 
-const PatientForm = ({error:errorObj , loading  , handleChange , handleSubmit , patientForm , handleDelete}) => {
+const PatientForm = ({error:errorObj , loading  , handleChange , handleSubmit , patientForm , handleClick}) => {
   const error = errorObj?.message
   return (
     <div className="p-10">
       <article className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-dark-blue-800 mb-10">Profile</h1>
-        <button className="m-0 mb-10 bg-red-600 hover:border-red-600" onClick={handleDelete}>
+        <button className="m-0 mb-10 bg-red-600 hover:border-red-600" onClick={handleClick}>
           Delete Profile
         </button>
       </article>
