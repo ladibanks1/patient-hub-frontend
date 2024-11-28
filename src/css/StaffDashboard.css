@@ -1,0 +1,13 @@
+/* Hero Section Style */
+@tailwind components;
+
+
+@layer components{
+    .stats > section{
+        @apply bg-sky-blue rounded p-3 text-white font-bold sm:px-7 md:w-[350px] md:py-7
+    }
+
+    .stats > section:nth-child(1){
+        @apply border-b-4 border-b-dark-blue-800
+    }
+}

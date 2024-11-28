@@ -43,6 +43,39 @@ export const editStaff = createAsyncThunk(
   }
 );
 
+export const staffProfile = createAsyncThunk(
+  "staff/profile",
+  async ({ id, token }, { rejectWithValue }) => {
+    try {
+      const res = await apiClient.get(`/staff/profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getAppointments = createAsyncThunk(
+  "staff/get-appointment",
+  async ({ id, token }, { rejectWithValue }) => {
+    try {
+      const res = await apiClient.get(`/staff/get-appointments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const staffSlice = createSlice({
   name: "staff",
   initialState: {
@@ -50,6 +83,8 @@ const staffSlice = createSlice({
     staff: {},
     message: "",
     error: [],
+    appointments: [],
+    appointLoading: false,
   },
   reducers: {
     clearState: (state) => {
@@ -59,6 +94,18 @@ const staffSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder
+      .addCase(staffProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(staffProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.staff = action.payload;
+      })
+      .addCase(staffProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
     builder
       .addCase(deleteStaff.pending, (state) => {
         state.loading = true;
@@ -82,6 +129,18 @@ const staffSlice = createSlice({
       })
       .addCase(editStaff.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      });
+    builder
+      .addCase(getAppointments.pending, (state) => {
+        state.appointLoading = true;
+      })
+      .addCase(getAppointments.fulfilled, (state, action) => {
+        state.appointLoading = false;
+        state.appointments = action.payload.data.appointments;
+      })
+      .addCase(getAppointments.rejected, (state, action) => {
+        state.appointLoading = false;
         state.error = action.payload;
       });
   },

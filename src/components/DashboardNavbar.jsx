@@ -16,7 +16,7 @@ const DashboardNavbar = () => {
         />
       </div>
       <div className="flex gap-10 items-center">
-        <article className="relative">
+        <article className="relative hidden sm:block">
           <FaBell className="text-3xl text-dark-blue-800" />
           <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex justify-center items-center">
             0

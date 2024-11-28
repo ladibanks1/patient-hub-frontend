@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaSignOutAlt, FaArrowRight, FaEllipsisV } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Popup from "./Popup";
+import Popup from "../../components/Popup";
 const Home = () => {
   const { appointments: response } = useSelector((state) => state.patient);
   const [popup, Setpopup] = useState(false);
@@ -91,7 +91,7 @@ const Home = () => {
                         />
                       </td>
                       {popup && currentIndex === index && (
-                        <Popup id={currentId} dates={dates} today={today} />
+                        <Popup id={currentId} dates={dates} today={today} userType={"Patient"} />
                       )}
                     </tr>
                   );

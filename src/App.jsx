@@ -40,7 +40,7 @@ import EditStaff from "./components/EditStaff";
 
 // Staff Pages
 import StaffDashboard from "./pages/Staff/Dashboard";
-
+import AppointmentTable from "./pages/Staff/AppointmentTable";
 function App() {
   // Routes
   const router = createBrowserRouter(
@@ -82,6 +82,7 @@ function App() {
 
           {/* Staff Route */}
           <Route path="staff-dashboard" element={<StaffDashboard />}>
+          <Route index element={<AppointmentTable/>} />
             <Route path="chat" element={<></>} />
           </Route>
         </Route>
