@@ -90,7 +90,7 @@ const ProfileSettings = () => {
       <Modal
         isOpen={isOpen}
         message={
-          "Are you sure you want to delete your profile? This action cannot be undone"
+          "Are you sure you want to delete your profile? All your data and staff details will be erased permanently"
         }
         onClose={handleClose}
         onConfirm={handleDelete}
