@@ -70,7 +70,7 @@ const Chat = () => {
               <img
                 src={picture}
                 alt="patient"
-                className="rounded-full object-cover"
+                className="w-7 rounded-full object-cover"
                 onClick={() => handleUser(_id)}
               />
               <p className="text-center text-sm">{`${first_name} ${last_name}`}</p>
