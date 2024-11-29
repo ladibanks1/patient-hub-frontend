@@ -4,13 +4,16 @@ import { useNavigate } from "react-router-dom";
 import Ratings from "../../components/Ratings";
 import axios from "axios";
 import { AuthContext } from "../../context/Authentication";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { staffProfile } from "../../redux/slices/staffSlice";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 const HeroSection = ({ staff }) => {
-  const { token } = useContext(AuthContext);
+  const { token, id } = useContext(AuthContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const avRating = Math.floor(staff.ratings.reduce((a, b) => a + b, 0));
   const fileRef = useRef();
 
@@ -35,6 +38,7 @@ const HeroSection = ({ staff }) => {
           }
         );
         toast.success(res.data.message);
+        dispatch(staffProfile({ id, token }));
       }
     } catch (error) {
       toast.error(error.response.data.message);
