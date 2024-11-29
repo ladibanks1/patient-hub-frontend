@@ -115,7 +115,6 @@ const AppointmentForm = () => {
       {/* Appointment Form */}
       <div className=" px-20">
         <form onSubmit={handleFormSubmission}>
-
           {/* Symptoms */}
           <label htmlFor="symptoms">Symptoms:</label>
           <input
@@ -133,7 +132,6 @@ const AppointmentForm = () => {
             )}
           {!Array.isArray(errMessage) &&
             errMessage?.message.includes("toms") && <p>{errMessage.message}</p>}
-
 
           {/* Hospital */}
           <label htmlFor="hospital">Hospital:</label>
@@ -163,7 +161,18 @@ const AppointmentForm = () => {
                       {loadDoc ? (
                         <>Loading ...</>
                       ) : (
-                        <>{`${doctor.first_name} ${doctor.last_name} --- ${doctor.specialism}`}</>
+                        <>
+                          {`${doctor.first_name} 
+                        ${doctor.last_name} --- 
+                        ${doctor.specialism}`}{" "}
+                          &gt;&gt;&gt;&gt; rated: 
+                          <>
+                            {` ${Math.floor(
+                              doctor.ratings.reduce((a, b) => a + b, 0)
+                            )}`}
+
+                          </>
+                        </>
                       )}
                     </option>
                   );

@@ -54,7 +54,7 @@ const Chat = () => {
       const roomName = `${id}-${doctorId}`;
       setRoom(roomName);
       setPatientId(id);
-      setPrevMessages(JSON.parse(localStorage.getItem(roomName) || []));
+      setPrevMessages(JSON.parse(localStorage.getItem(roomName)) || []);
       socket.emit("join_room", { doctorId, patientId: id });
     }
   };
@@ -64,12 +64,19 @@ const Chat = () => {
   return (
     <div className="bg-[#02b4bd2c] p-5">
       <div className="flex gap-6 w-full flex-wrap">
-        {patients.map(({ picture, last_name, first_name, _id }, id) => (
-          <div key={id} className="cursor-pointer w-14">
-            <img src={picture} alt="doctor" onClick={() => handleUser(_id)} />
-            <p className="text-center text-sm">{`${first_name} ${last_name}`}</p>
-          </div>
-        ))}
+        {patients.length > 0 ? (
+          patients.map(({ picture, last_name, first_name, _id }, id) => (
+            <div key={id} className="cursor-pointer w-14">
+              <img src={picture} alt="doctor" onClick={() => handleUser(_id)} />
+              <p className="text-center text-sm">{`${first_name} ${last_name}`}</p>
+            </div>
+          ))
+        ) : (
+          <p className="flex justify-center items-center mx-auto h-[70vh]">
+            It seems like you're not currently assigned to a patient.
+            <br /> Please try refreshing the page or check back later.
+          </p>
+        )}
       </div>
 
       {patientId && (

@@ -54,29 +54,27 @@ const Chat = () => {
       const roomName = `${patientId}-${id}`;
       setRoom(roomName);
       setDoctorId(id);
-      setPrevMessages(JSON.parse(localStorage.getItem(roomName) || []));
+      setPrevMessages(JSON.parse(localStorage.getItem(roomName)) || []);
       socket.emit("join_room", { patientId, doctorId: id });
     }
   };
 
-  const chosenDoctor = doctors.find(
-    (doctor) => doctor._id === doctorId
-  )
+  const chosenDoctor = doctors.find((doctor) => doctor._id === doctorId);
 
   return (
     <div className="bg-[#02b4bd2c] p-5">
       <div className="flex gap-6 w-full flex-wrap">
-        {doctors.map(({ picture, last_name, _id }, id) => (
+        {doctors.length > 0 ?doctors.map(({ picture, last_name, _id }, id) => (
           <div key={id} className="cursor-pointer w-14">
             <img src={picture} alt="doctor" onClick={() => handleUser(_id)} />
             <p className="text-center text-sm">{`Dr. ${last_name}`}</p>
           </div>
-        ))}
+        )): <p className="flex justify-center items-center mx-auto h-[70vh]">No Doctors Available. Try Book An Appointment Or Refresh</p>}
       </div>
 
       {doctorId && (
         <section className="h-[80vh] bg-[#02b4bd2c] mt-5 rounded overflow-auto relative">
-         <div className="cursor-pointer bg-[#02b4bdd5] sticky py-2 top-0">
+          <div className="cursor-pointer bg-[#02b4bdd5] sticky py-2 top-0">
             <img
               src={chosenDoctor.picture}
               alt="doctor"
