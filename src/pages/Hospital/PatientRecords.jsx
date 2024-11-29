@@ -40,11 +40,11 @@ const PatientRecords = () => {
             </p>
             <p>
               <span>Latest Appointment Date</span>:
-              {new Date(latestAppointment.createdAt).toDateString()}
+              {new Date(latestAppointment.appointment_date).toDateString()}
             </p>
             <p>
               <span>Latest Appointment Time</span>:
-              {new Date(latestAppointment.appointment_date).toDateString()}
+              {new Date(latestAppointment.appointment_date).toLocaleTimeString()}
             </p>
           </section>
         );
