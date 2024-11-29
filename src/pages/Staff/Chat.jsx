@@ -90,7 +90,7 @@ const Chat = () => {
             <img
               src={chosenPatient.picture}
               alt="doctor"
-              className="w-10 inline rounded-full object-cover"
+              className="w-8 inline rounded-full object-cover"
               onClick={() => handleUser(_id)}
             />
             <p className="text-sm inline">{`${chosenPatient.first_name} ${chosenPatient.last_name}`}</p>
