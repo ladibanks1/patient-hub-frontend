@@ -66,7 +66,7 @@ const Chat = () => {
       <div className="flex gap-6 w-full flex-wrap">
         {doctors.length > 0 ?doctors.map(({ picture, last_name, _id }, id) => (
           <div key={id} className="cursor-pointer w-14">
-            <img src={picture} alt="doctor" className="rounded-full" onClick={() => handleUser(_id)} />
+            <img src={picture} alt="doctor" className="rounded-full object-cover" onClick={() => handleUser(_id)} />
             <p className="text-center text-sm">{`Dr. ${last_name}`}</p>
           </div>
         )): <p className="flex justify-center items-center mx-auto h-[70vh]">No Doctors Available. Try Book An Appointment Or Refresh</p>}
@@ -78,7 +78,7 @@ const Chat = () => {
             <img
               src={chosenDoctor.picture}
               alt="doctor"
-              className="w-10 inline"
+              className="w-10 inline rounded-full object-cover"
               onClick={() => handleUser(_id)}
             />
             <p className="text-sm inline">{`${chosenDoctor.first_name} ${chosenDoctor.last_name}`}</p>
