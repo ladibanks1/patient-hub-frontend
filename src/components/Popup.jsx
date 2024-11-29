@@ -18,9 +18,9 @@ const Popup = ({
   closePopup,
   hospital,
   doctor,
+  notes,
 }) => {
   const { token } = useContext(AuthContext);
-
   const { id: patientId, staff } = useOutletContext();
   const dispatch = useDispatch();
 
@@ -29,7 +29,6 @@ const Popup = ({
   const [modalType, setModalType] = useState("");
   const [confirm, setConfirm] = useState(false);
 
-  // Api Client
   const apiClient = axios.create({
     baseURL,
     headers: {
@@ -43,146 +42,52 @@ const Popup = ({
     closePopup(false);
   };
 
+  const handleApiResponse = async (apiCall, successMessage) => {
+    try {
+      const response = await apiCall();
+      if (response.data) {
+        toast.success(response.data.message);
+        if (userType === "Patient") {
+          dispatch(getAppointment({ id: patientId, token }));
+        } else if (userType === "Staff") {
+          dispatch(getAppointments({ token, id: staff._id }));
+        }
+      }
+    } catch (error) {
+      const errorMessage = Array.isArray(error.response.data.message)
+        ? error.response.data.message[0].message
+        : error.response.data.message;
+      toast.error(errorMessage);
+    }
+  };
+
   const onConfirmModal = async (date = "", rating = 0) => {
     setConfirm(true);
     setOpenModal(false);
     closePopup(false);
 
-    // Switch For Popup Actions
-    switch (message) {
-      case "Cancel":
-        try {
-          const response = await apiClient.get(
-            `/appointment/cancel-appointment/${id}`
-          );
-          if (response.data) {
-            toast.success(response.data.message);
-            if (userType === "Patient")
-              dispatch(getAppointment({ id: patientId, token }));
-            if (userType === "Staff")
-              dispatch(getAppointments({ token, id: staff._id }));
-          }
-        } catch (error) {
-          toast.error(error.response.data.message);
-        }
-        break;
+    const apiCalls = {
+      Cancel: () => apiClient.get(`/appointment/cancel-appointment/${id}`),
+      Delete: () => apiClient.delete(`/appointment/delete-appointment/${id}`),
+      Confirm: () => apiClient.get(`/appointment/confirm-appointment/${id}`),
+      Reschedule: () =>
+        apiClient.get(`/appointment/reschedule-appointment/${id}?date=${date}`),
+      "Rate Doctor": () =>
+        apiClient.get(`/staff/rate-staff/${doctor._id}?rating=${rating}`),
+      "Rate Hospital": () =>
+        apiClient.get(
+          `/hospital/rate-hospital/${hospital._id}?rating=${rating}`
+        ),
+    };
 
-      case "Delete":
-        try {
-          const response = await apiClient.delete(
-            `/appointment/delete-appointment/${id}`
-          );
-          if (response.data) {
-            toast.success(response.data.message);
-            if (userType === "Patient")
-              dispatch(getAppointment({ id: patientId, token }));
-            if (userType === "Staff")
-              dispatch(getAppointments({ token, id: staff._id }));
-          }
-        } catch (error) {
-          toast.error(error.response.data.message);
-        }
-        break;
-      case "Confirm":
-        try {
-          const response = await apiClient.get(
-            `/appointment/confirm-appointment/${id}`
-          );
-          if (response.data) {
-            toast.success(response.data.message);
-            if (userType === "Patient")
-              dispatch(getAppointment({ id: patientId, token }));
-            if (userType === "Staff")
-              dispatch(getAppointments({ token, id: staff._id }));
-          }
-        } catch (error) {
-          toast.error(error.response.data.message);
-        }
-        break;
-
-      case "Reschedule":
-        try {
-          const response = await apiClient.get(
-            `/appointment/reschedule-appointment/${id}?date=${date}`
-          );
-          if (response.data) {
-            toast.success(response.data.message);
-            if (userType === "Patient")
-              dispatch(getAppointment({ id: patientId, token }));
-            if (userType === "Staff")
-              dispatch(getAppointments({ token, id: staff._id }));
-          }
-        } catch (error) {
-          if (Array.isArray(error.response.data.message)) {
-            toast.error(error.response.data.message[0].message);
-          }
-          if (!Array.isArray(error.response.data.message)) {
-            toast.error(error.response.data.message);
-          }
-        }
-        break;
-
-      case "Rate Doctor":
-        try {
-          const response = await apiClient.get(
-            `/staff/rate-staff/${doctor._id}?rating=${rating}`
-          );
-          toast.success(response.data.message);
-        } catch (error) {
-          console.log(error)
-          toast.error(error.response.data.message);
-        }
-        break;
-
-      case "Rate Hospital":
-        try {
-          const response = await apiClient.get(
-            `/hospital/rate-hospital/${hospital._id}?rating=${rating}`
-          );
-          toast.success(response.data.message);
-        } catch (error) {
-          toast.error(error.response.data.message);
-        }
-        break;
-
-      default:
-        break;
+    if (apiCalls[message]) {
+      await handleApiResponse(apiCalls[message], message);
     }
   };
 
-  const handleCancel = async () => {
-    setModalType("");
-    setMessage("Cancel");
-    setOpenModal(true);
-  };
-
-  const handleDelete = async () => {
-    setModalType("");
-    setMessage("Delete");
-    setOpenModal(true);
-  };
-
-  const handleReschedule = async () => {
-    setMessage("Reschedule");
-    setModalType("Reschedule");
-    setOpenModal(true);
-  };
-
-  const handleConfirm = () => {
-    setModalType("");
-    setMessage("Confirm");
-    setOpenModal(true);
-  };
-
-  const handleDocRating = () => {
-    setModalType("Rating");
-    setOpenModal(true);
-    setMessage("Rate Doctor");
-  };
-
-  const handleHospitalRating = () => {
-    setModalType("Rating");
-    setMessage("Rate Hospital");
+  const handleAction = (action, type = "") => {
+    setModalType(type);
+    setMessage(action);
     setOpenModal(true);
   };
 
@@ -192,8 +97,8 @@ const Popup = ({
         <div>
           <button
             className="bg-gray-400 p-2 hover:bg-gray-600 hover:border-none hover:text-white w-[95%] disabled:hover:cursor-not-allowed"
-            onClick={handleCancel}
-            disabled={dates > today ? false : true}
+            onClick={() => handleAction("Cancel")}
+            disabled={dates <= today}
           >
             Cancel
           </button>
@@ -201,7 +106,9 @@ const Popup = ({
         <div>
           <button
             className="bg-red-500 p-2 hover:bg-red-800 hover:border-none hover:text-white w-[95%]"
-            onClick={userType === "Patient" ? handleDelete : handleConfirm}
+            onClick={() =>
+              handleAction(userType === "Patient" ? "Delete" : "Confirm")
+            }
           >
             {userType === "Patient" ? "Delete" : "Confirm"}
           </button>
@@ -209,8 +116,8 @@ const Popup = ({
         <div>
           <button
             className="bg-green-500 p-2 hover:bg-green-700 hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
-            onClick={handleReschedule}
-            disabled={dates > today ? false : true}
+            onClick={() => handleAction("Reschedule", "Reschedule")}
+            disabled={dates <= today}
           >
             Reschedule
           </button>
@@ -220,7 +127,7 @@ const Popup = ({
             <div>
               <button
                 className="bg-dark-blue-800 p-2 px-4 hover:bg-fade-dark-blue hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
-                onClick={handleDocRating}
+                onClick={() => handleAction("Rate Doctor", "Rating")}
               >
                 Rate Doc
               </button>
@@ -228,18 +135,28 @@ const Popup = ({
             <div>
               <button
                 className="bg-blue-500 p-2 hover:bg-blue-700 hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
-                onClick={handleHospitalRating}
+                onClick={() => handleAction("Rate Hospital", "Rating")}
               >
                 Rate Hospital
               </button>
             </div>
           </>
         )}
+        {userType === "Staff" && (
+          <div>
+            <button
+              className="bg-blue-500 p-2 hover:bg-blue-700 hover:border-none hover:text-white disabled:hover:cursor-not-allowed"
+              onClick={() => handleAction(notes, "Notes")}
+            >
+              View Notes
+            </button>
+          </div>
+        )}
       </div>
       <Modal
         isOpen={openModal}
         message={
-          modalType === "Rating"
+          modalType === "Rating" || modalType === "Notes"
             ? message
             : `Are You Sure You Want to ${message} the Appointment?`
         }

@@ -95,7 +95,7 @@ const AppointmentTable = () => {
                 )}
                 {appointments.map(
                   (
-                    { symptoms, patient, appointment_date, status, _id },
+                    { symptoms, patient, appointment_date, status, _id  , notes},
                     index
                   ) => {
                     const dates = new Date(appointment_date).getTime();
@@ -125,6 +125,7 @@ const AppointmentTable = () => {
                             today={today}
                             userType={"Staff"}
                             closePopup={Setpopup}
+                            notes={notes}
                           />
                         )}
                       </tr>

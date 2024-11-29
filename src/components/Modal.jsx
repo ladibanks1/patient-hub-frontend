@@ -23,7 +23,10 @@ const Modal = ({ isOpen, onClose, onConfirm, message, type }) => {
           </>
         ) : type === "Rating" ? (
           <>
-            <label htmlFor="rating" className="text-white pb-2 text-sm">{`${message}`}</label>
+            <label
+              htmlFor="rating"
+              className="text-white pb-2 text-sm"
+            >{`${message}`}</label>
             <select
               name="rating"
               id="rating"
@@ -43,22 +46,33 @@ const Modal = ({ isOpen, onClose, onConfirm, message, type }) => {
           <p>{message}</p>
         )}
         <div className="mt-4 flex justify-end gap-2">
-          <button
-            className="bg-gray-400 p-2 px-4 hover:bg-gray-600 hover:text-white"
-            onClick={onClose}
-          >
-            {type === "Reschedule" || "Rating" ? "Cancel" : "NO"}
-          </button>
-          <button
-            className="bg-blue-500 p-2 px-4 hover:bg-blue-700 hover:text-white"
-            onClick={() => onConfirm(date, rating)}
-          >
-            {type === "Reschedule"
-              ? "Reschedule"
-              : type === "Rating"
-              ? "Rate"
-              : "YES"}
-          </button>
+          {type === "Notes" ? (
+            <button
+              className="bg-blue-500 p-2 px-4 hover:bg-blue-700 hover:text-white"
+              onClick={onClose}
+            >
+              Close
+            </button>
+          ) : (
+            <>
+              <button
+                className="bg-gray-400 p-2 px-4 hover:bg-gray-600 hover:text-white"
+                onClick={onClose}
+              >
+                {type === "Reschedule" || "Rating" ? "Cancel" : "NO"}
+              </button>
+              <button
+                className="bg-blue-500 p-2 px-4 hover:bg-blue-700 hover:text-white"
+                onClick={() => onConfirm(date, rating)}
+              >
+                {type === "Reschedule"
+                  ? "Reschedule"
+                  : type === "Rating"
+                  ? "Rate"
+                  : "YES"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
