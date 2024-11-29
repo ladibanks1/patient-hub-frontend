@@ -67,7 +67,12 @@ const Chat = () => {
         {patients.length > 0 ? (
           patients.map(({ picture, last_name, first_name, _id }, id) => (
             <div key={id} className="cursor-pointer w-14">
-              <img src={picture} alt="doctor" onClick={() => handleUser(_id)} />
+              <img
+                src={picture}
+                alt="patient"
+                className="rounded-full"
+                onClick={() => handleUser(_id)}
+              />
               <p className="text-center text-sm">{`${first_name} ${last_name}`}</p>
             </div>
           ))
